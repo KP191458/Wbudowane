@@ -1,6 +1,7 @@
 \documentclass{classrep}
 \usepackage[utf8]{inputenc}
 \usepackage{color}
+\usepackage{gensymb}
 
 \studycycle{Informatyka, studia niestocjanarne, I st.}
 \coursesemester{IV}
@@ -22,8 +23,204 @@
 
 \begin{document}
 \maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section {Opis projektu}
+Zadaniem projektu bylo stworzenie urządzenia które służyć będzie jako pomoc w monitorowaniu temperatury i wilgotności w ogrodzie bądź szklarni i dozowaniu zasobów wodnych. Urządznie mierzyć będzie temperaturę otoczenia i wilgotność powietrza. Pomierzone dane są wywietlane na ekranie a także urządzenie posiada dwie diody które sygnalizują przekrocznie ustalonego zakresu wilgotnosci. Przekroczenie zakresu uruchania także serwomechanizm, który może służyć jako urządzenie otwierające zawór nawodnienia szklarni.\\
+
+\subsection {Wykaz urządzeń}
+\begin{itemize} 
+  \item Arduino Uno
+  \item SHT31 - cyfrowy czujnik temperatury i wilgotności
+  \item Arduino-Dem - moduł wyświetlacza LCD 2''
+  \item Serwomechanizm Tower Pro SG90
+  \item Diody LED 5 mm
+  \item Rezystory przewlekane 330 \ohm
+  \item Płytka stykowa 830 otworów
+  \item Przewody połączeniowe męsko-męskie
+  \item Przewody połączeniowe damsko-męskie
+\end{itemize}
+
+\subsection {Wykaz funkcjonalności}
+\begin{enumerate}
+  \item SPI
+  \item GPIO
+  \item LCD
+  \item SHT31 - temperatura
+  \item SHT31 - wilgotność
+  \item Serwomechanizm
+  \item LED
+\end{enumerate}
+
+\section {Dokumentacja użytkownika}
+\subsection {Wymagania sprzętowe}
+Projekt wymagał xxxx co wymagało modelu Arduino który posiadał co najmniej taką ilość wejść i wyjść. Zdecydowalimy się na użycie Arduino Uno, ponieważ posiadało ono wymaganą liczbę wejść i wyjść oraz, ze względu na popularność posiadało liczne dokumentacje i przykłady użycia.
+
+\subsection {Instrukcja użytkownika}
+Po podłączeniu zasilania zainstalowane na urządzeniu oprogramowanie rozpoczyna inicjalizację urządzeń a następnie pomiar temperatury i wilgotności.
+
+\begin{itemize}
+  \item Pomiar wykonywany jest co 1 sekundę 
+  \item Odczytane pomiary wywietlane są na wyświetlaczu LCD
+  \item Dioda LED w kolorze zielonym informuje że zmieziona wilgotność jest poniżej 70\%.
+  \item Dioda LED w kolorze czerwonym informuje że zmieziona wilgotność jest powyżej 70\%.
+  \item Po przekroczeniu wilgotności 70\% uruchomiony zostaje serwomechanizm który wykorzystany może zostać do otwarcia zaworu systemu nawadniającego (w szklarni bądź pomieszczeniu)
+\end{itemize}
+
+\subsection {Interfejs użytkownika}
+Urządzenie nie wymaga interakcji użytkownika w celu dokonania pomiarów. Interfejsem jest ekran oraz kolor diod LED.\\
+
+Z ekranu możemy odczytać wartości liczbowe temperatury (w stopniach Celsjusza) oraz wilgotności (w procentach).
+
+\section {Specyfikacja urządzeń}
+
+\subsection {Arduino Uno}
+Arduino Uno to płyta mikrokontrolera oparta na ATmega328. Posiada 14 cyfrowych wejść / wyjść (z których 6 można wykorzystać jako wyjścia PWM), 6 wejść analogowych, ceramiczny rezonator 16 MHz, złącze USB, gniazdo zasilania, nagłówek ICSP i przycisk resetowania.\\
+
+Arduino Uno w wersji R3 to najnowsza wersja po Duemilanove, z ulepszonym układem interfejsu USB. Podobnie jak Duemilanove, ma on nie tylko rozszerzony nagłówek osłony z napięciem odniesienia 3,3 V i pin RESET (który rozwiązuje problem dotarcia do szpilki RESET w osłonie) oraz bezpiecznik 500 mA do ochrony portu USB komputera, ale także automatyczny obwód do wyboru zasilania USB lub DC bez zworki! Uno jest kompatybilny z kodami pin i Duemilanove, Diecimilla i starszymi Arduino, więc wszystkie płytki (shieldy), biblioteki i kod będą nadal działać. Nowy R3 (trzecia wersja) UNO ma kilka drobnych aktualizacji, z aktualizacją układu interfejsu USB i dodatkowymi przełamaniami dla pinów i2c i pinów IORef.\\
+
+Arduino to platforma prototypowania elektroniki typu open source oparta na elastycznym, łatwym w użyciu sprzęcie i oprogramowaniu. Jest przeznaczony dla artystów, projektantów, hobbystów i wszystkich zainteresowanych tworzeniem interaktywnych obiektów lub środowisk.\\
+
+Arduino może wyczuwać środowisko, otrzymując dane wejściowe z różnych czujników i może wpływać na otoczenie, kontrolując światła, silniki i inne siłowniki. Mikrokontroler na płycie programowany jest za pomocą języka programowania Arduino (opartego na Wiring) i środowiska programistycznego Arduino (opartego na Processing). Projekty Arduino mogą być autonomiczne lub mogą komunikować się z oprogramowaniem działającym na komputerze (np. Flash, Processing, Max / MSP).\\
+
+Parametry techniczne:
+\begin{itemize}
+  \item Mikrokontroler ATmega328
+  \item Napięcie robocze 5 V.
+  \item Napięcie wejściowe (zalecane) 7-12 V.
+  \item Napięcie wejściowe (limity) 6-20 V.
+  \item Cyfrowe piny we / wy 14 (z których 6 zapewnia wyjście PWM)
+  \item Piny wejścia analogowego 6
+  \item Prąd DC na pin we / wy 40 mA
+  \item Prąd DC dla 3,3 V Pin 50 mA
+  \item Pamięć flash 32 KB (ATmega328) z czego 0,5 KB jest używane przez bootloader
+  \item SRAM 2 KB (ATmega328)
+  \item EEPROM 1 KB (ATmega328)
+  \item Szybkość zegara 16 MHz
+  \item Długość 68,6 mm
+  \item Szerokość 53,4 mm
+  \item Waga 25 g
+\end{itemize}
+
+\subsection {SHT31 - cyfrowy czujnik temperatury i wilgotności}
+Seria czujników temperatury i wilgotności SHT3x dostępna jest w dwóch wersjach: wersja niskokosztowa SHT30 i wersja standardowa sht31. Rodzina SHT3x łączy wiele funkcji i interfejsów z przyjaznym szerokim zakresem napięć roboczych (2.4 do 5.5 V). W porównaniu do czujników poprzedniej generacji seria SHT3x jest inteligentniejsza, bardziej niezawodna i dokładniejsza. Jest bardziej funkcjonalny, ma wyższe możliwości przetwarzania sygnału i może odczytywać wartości temperatury i wilgotności za pomocą różnych pinów.\\
+
+Ponadto wprowadzenie tej wersji dodatkowo rozszerzyło rodzinę produktów SHT3x. Zastosowanie osłony ochronnej typu filmowego rozszerza również zakres zastosowań. Jest to stopień ochrony IP67 dla wody i ochrona przeciwpyłowa niż folia PTFE, dzięki czemu może być stosowany w trudnych warunkach, w których woda i kurz mogą wpływać na dokładność i wydajność czujnika.\\
+
+Cechy:
+\begin{enumerate}
+  \item Wysoka niezawodność i długa stabilność
+  \item Z technicznego punktu widzenia niezawodne
+  \item Nadaje się do aplikacji wysoka głośność
+  \item Wysoka zdolność przetwarzania sygnału
+  \item Niski poziom sygnału\\
+\end{enumerate}
 
 
+Parametry produktu:
+\begin{enumerate}
+  \item Wyjście: I2C, napięcie wyjściowe
+  \item Napięcie zasilania: 2.4 do 5.5 V
+  \item Zakres roboczy RH: 0-99.99\% RH
+  \item Zakres temperatury pracy:-40 \degree do 125 \degree c (-40 \degree do 257 \degree f)
+  \item Czas reakcji RH: 8 sekund (tau63 \%)
+\end{enumerate}
+
+
+\subsection {Arduino-Dem - moduł wyświetlacza LCD 2''}
+DEM 1280640 FGH-PW\\
+
+FUNKCJE ORAZ CECHY\\
+LCD TYPE
+Transflective Positive Mode\\
+Viewing Direction           : 6 o'clock\\
+ Driving Scheme           : 1/65 Duty, 1/9 Bias\\
+ Power Supply Voltage   : 3.3 Volt\\
+ VLCD                        : 9.0 Volt\\
+ Display Contents         : 128 x 64 Dots\\
+ Driver IC                   : ST7565R (Sitronix)\\
+ RoHS                        : Compliant\\
+ Interfejs                    : SPI\\
+
+SPECYFIKACJE MECHANICZNE\\
+Module Size   	:  58.20 x 41.70 x 5.70 mm\\
+Viewing Area 	:  50.00 x 25.00 mm\\
+Active Area 	:  46.06 x 23.02 mm\\
+Dot Size		: 20.34. x 0.34 mm\\
+Dot Gap 		: 20.02 mm\\
+
+\subsection {Serwomechanizm Tower Pro SG90}
+9-gramowe serwo typu micro SG90 firmy TowerPro to bardzo popularny model serwa stosowany w modelarstwie, robotyce, konstrukcjach napędowych, systemach alarmowych.\\
+
+Serwo ma niewielką wagę lecz jest stosunkowo szybkie i ma siłę odpowiednią do sterowania modelami.\\
+
+Charakterystyka:
+\begin{itemize}
+  \item Prędkość przekładni: 0,12 s/60\degree (4,8 V)
+  \item Moment: 1,2 – 1,8kg/cm (4,8 V)
+  \item Napięcie pracy: 4,8 – 7,2V
+  \item Długość przewodów zasilania: 23,5cm
+  \item Waga: 9g
+  \item Czas reakcji: 7 us
+  \item Temperatura pracy: -30 do +60 stopni
+  \item Wymiary 22mm x 12mm x 22,7mm\\
+\end{itemize}
+
+Oznaczenie przewodów:
+\begin{itemize}
+  \item Czerwony: zasilanie
+  \item Brązowy: masa
+  \item Pomarańczowy: sygnał
+\end{itemize}
+
+\subsection {Diody LED 5 mm}
+Parametry diody zielonej:
+\begin{itemize}
+  \item Soczewka w kolorze zielonym
+  \item Obudowa: DIP 5 mm
+  \item Długość emitowanej fali: 571 nm
+  \item Jasność: 100 - 150 mcd
+  \item Kąt świecenia: 50\degree
+  \item Temp. pracy: od-40 \degree C do +80 \degree C
+  \item Parametry pracy:
+\begin{itemize}
+  \item Prąd If: 20 mA
+  \item Napięcie Vf: 2,3 - 2,5 V\\
+\end{itemize}
+\end{itemize}
+
+Parametry diody czerwonej:
+\begin{itemize}
+  \item Soczewka w kolorze czerwonym
+  \item Obudowa: DIP 5 mm
+  \item Długość emitowanej fali: 625-645 nm
+  \item Jasność: 450 - 800 mcd
+  \item Kąt świecenia : 70 \degree
+  \item Temp. pracy: od -40 \degree C do +80 \degree C
+  \item Parametry pracy:
+\begin{itemize}
+  \item Prąd If: 20mA
+  \item Napięcie Vf: 2,0 - 2,3 V'
+\end{itemize}
+\end{itemize}
+
+\subsection {Rezystor przewlekany 330 \ohm}
+Specyfikacja rezystorów
+\begin{itemize}
+  \item Rezystancja: 330 \ohm
+  \item Moc znamionowa: 1/4 W
+  \item Tolerancja: 5\%
+  \item Montaż: przewlekany THT
+\end{itemize}
+\subsection {Płytka stykowa 830 otworów}
+Dane techniczne płytki stykowej
+\begin{itemize}
+  \item Wymiary: 165 x 53 mm
+  \item Liczba otworów: 830
+  \item Posiada kolorowe paski, które mogą oznaczać polaryzację zasilania (+i-)
+\end{itemize}
 
 \begin{thebibliography}{0}
 \end{thebibliography}
