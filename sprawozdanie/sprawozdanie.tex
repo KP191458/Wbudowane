@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{gensymb}
+\usepackage{listings}
+\usepackage{tabto}
 
 \studycycle{Informatyka, studia niestocjanarne, I st.}
 \coursesemester{IV}
@@ -47,6 +49,7 @@ Zadaniem projektu bylo stworzenie urządzenia które służyć będzie jako pomo
 \begin{enumerate}
   \item SPI
   \item GPIO
+  \item Timer
   \item LCD
   \item SHT31 - temperatura
   \item SHT31 - wilgotność
@@ -221,6 +224,98 @@ Dane techniczne płytki stykowej
   \item Liczba otworów: 830
   \item Posiada kolorowe paski, które mogą oznaczać polaryzację zasilania (+i-)
 \end{itemize}
+
+\section {Specyfikacja funkcjonalności}
+\subsection {SPI}
+Interfejs SPI( Serial Peripheral Interface) używany jest do komunikacji z wyświetlaczem i diodami LED. Inicjalizacja obsługi wyświetlacza odbywa się poprzed załącznie biblioteki oraz wywołanie konstruktora identyfikującego urządzenie. W naszym wypadku jest to:\\ U8G2\_ST7567\_ENH\_DG128064\_F\_4W\_SW\_SPI\\
+
+Przekazujemy do niego następujące wartości:\\
+\textbf{rotation}: czyli kąt obrotu zawartości wyświetlacza (w naszym wypadku 180 stopni)\\
+\textbf{SCL} (clock): numer pinu timera (sygnał taktujący) (PIN 13)\\
+\textbf{SDA} (data): numer pinu przesyłu danych (PIN 11)\\
+\textbf{CS}: wybór układu podrzędnego (PIN 10)\\
+\textbf{D/C} (dc): numer pinu odpowiedzialny za wybór pomiędzy trybem instrukcji a trybem zanków (PIN 9)\\
+\textbf{reset}: numer pinu odpowiedzialny za restart ekranu (PIN 8)\\
+
+clock, data, cs, dc, reset mają wartości jednobajtowe.\\
+\subsection {GPIO}
+GPIO (General Purpose Input/Output) . GPIO kontroluje piny, ustawiając ich stan na wysoki (1 - HIGH) lub
+niski (0 - LOW) co, odpowiednio, skutkuje ustawieniem pina na urządzenia wyjścia jak i wejścia.
+W projekcie naszym użylimy GPIO do zmiany stanu dwóch diod LED sygnalizujących kolorem poziom wilgotności. 
+
+Fragmenty kodu podpowiadające za użycie GPIO:
+\begin{lstlisting}
+int czerwona = 7;
+int zielona = 6;
+
+pinMode(czerwona, OUTPUT);
+pinMode(zielona, OUTPUT);
+
+  if(h>70.0)
+  {
+    digitalWrite(czerwona, HIGH);
+    digitalWrite(zielona, LOW);
+  }
+  else
+  {
+    digitalWrite(czerwona, LOW);
+    digitalWrite(zielona, HIGH);
+  }
+\end{lstlisting}
+
+\subsection {LCD}
+Użyta przez nas funkcjonalność niezbędna do podstawowej obsługi wyświetlacza przedstawiona została w rozdziale dotyczącym SPI. Natomiast jeśli zajdzie taka potrzeba można dokonać zaawansowanej obsługi wywietlacza poprzez wpisanie porządanych wartości w konkretne rejestry urządzenia. \\
+
+Architekturę urządzenia przedstawia diagram:\\
+
+
+Pełna lista rejestrów cmds znajduje się pod adresem:\\
+\url{https://github.com/olikraus/u8g2/blob/master/doc/controller_cmds.txt}
+
+Najwżniejsze z nich to:\\
+
+\begin{center}
+\begin{tabular}{ c c c }
+0x000 & 00000000 & Lo Col \\
+0x00f & 00001111 & Lo Col \\
+0x010 & 00010000 & Hi Col \\
+0x01f & 00011111 & Hi Col \\
+0x020 & 00100000 & Res Ratio   \\
+0x023 & 00100011 & Res Ratio \\
+0x024 & 00100100 & Res Ratio \\
+0x027 & 00100111 & Res Ratio \\
+0x028 & 00101000 & Pwr Ctrl \\
+0x02f & 00101111 & Pwr Ctrl \\
+0x040 & 01000000 & Start Line \\
+0x07f & 01111111 & Start Line \\
+0x081 & 10000001 & Contrast \\
+0x0a0 & 10100000 & Seg Normal \\
+0x0a1 & 10100001 & Seg Reverse \\
+0x0a2 & 10100010 & 1/9 bias \\
+0x0a3 & 10100011 & 1/7 bias \\
+0x0a4 & 10100100 & Normal Op \\
+0x0a5 & 10100101 & All pt on \\
+0x0a6 & 10100110 & Normal Op \\
+0x0a7 & 10100111 & Inverse \\
+0x0ac & 10101100 & Indic. On \\
+0x0ad & 10101101 & Indic. Off \\
+0x0ae & 10101110 & Disp Off \\
+0x0af & 10101111 & Disp On \\
+0x0b0 & 10110000 & Page Adr \\
+0x0b7 & 10111111 & Page Adr \\
+0x0c0 & 11000xxx & Com Normal \\
+0x0c7 & 11000xxx & Com Normal \\
+0x0c8 & 11001xxx & Com Reverse \\
+0x0cf & 11001xxx & Com Reverse \\
+0x0e0 & 11100000 & Start R-M-W \\
+0x0e2 & 11100010 & Reset
+\end{tabular}
+\end{center}
+
+\subsection {SHT31 - temperatura}
+\subsection {SHT31 - wilgotność}
+\subsection {Serwomechanizm}
+\subsection {LED}
 
 \begin{thebibliography}{0}
 \end{thebibliography}
