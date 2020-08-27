@@ -311,10 +311,63 @@ Najwżniejsze z nich to:\\
 0x0e2 & 11100010 & Reset
 \end{tabular}
 \end{center}
+\subsection {I2C}
+Magistrala I2C zawiera siedem rejestrów:
+\begin{itemize}
+  \item \textbf{I2CONSET} (Control Set register) Odpowiada za ustawianie bitów w rejestrze I2CON, który
+kontroluje operacje na interfejsie I 2 C. Ustawienie jedynki w tym rejestrze skutkuje
+ustawieniem odpowiedniego bitu w rejestrze kontrolnym I 2 C. Ustawienie stanu niskiego
+(zera) nie powoduje żadnych efektów. I2CONSET zawiera osiem bitów.
+  \item \textbf{I2STAT} (Status register) Odpowiada za informacje o I 2 C, rejestr w trybie tylko do odczytu.
+Również posiada osiem bitów, z czego trzy pierwsze (bity o numerze 0,1,2) są nieużywane i
+są zerami. Pozostałe bity o numerach 3,4,5,6,7 dostarczają informacji statusie interfejsu I 2 C.
+  \item \textbf{I2DAT} (Data register) Rejestr ten zawiera wysłane lub otrzymane dane. Proces może
+odczytać i zapisywać ten rejestr tylko wtedy, gdy nie jest w trakcie przesuwania bitu
+  \item \textbf{I2ADR} (Slave Address register) Rejestr ten jest możliwy do odczytu i zapisu. Używany tylko
+wtedy, gdy interfejs I 2 C jest ustawiony na slave mode. W innym przypadku rejestr nie jest
+używany.
+  \item \textbf{I2SCLH} (High duty cycle register) Rejestr ten zawiera 16 bitów (od 0 do 15). Ustawia czas SCL
+HIGH zegara I 2 C.
+  \item \textbf{I2SCLL} (Low duty cycle register) Rejestr ten zawiera 16 bitów (od 0 do 15). Ustawia czas SCL
+LOW zegara I 2 C.
+  \item \textbf{I2CONCLR} (Control Clear register) Odpowiada za czyszczenie bitów w rejestrze I2CON.
+Ustawienie jedynki w tym rejestrze skutkuje ustawieniem odpowiedniego bitu w rejestrze
+kontrolnym I 2 C. Ustawienie zera nie powoduje żadnych efektów. Rejestr ten posiada osiem
+bitów.\\
+\end{itemize}
+W projekcie naszym używaliśmy jedynie rejestru \textbf{I2ADR}.
 
-\subsection {SHT31 - temperatura}
-\subsection {SHT31 - wilgotność}
+\subsection {SHT31}
+Odczyt z termometru/miernika wilgotności SHT31 opiera się o odczyt danych z wymienionego wyżej rejestru I2ADR. Do zaawansowanej obsługi SHT31 możemy użyć jego rejestrów:
+
+\begin{center}
+\begin{tabular}{ c c c }
+nazwa & wartość & opis \\
+SHT31\_DEFAULT\_ADDR & 0x44 & Adres domyślny \\
+SHT31\_MEAS\_HIGHREP\_STRETCH & 0x2C06 & Measurement High Repeatability \\
+ &  & with Clock Stretch Enabled \\
+SHT31\_MEAS\_MEDREP\_STRETCH & 0x2C0D & Measurement Medium Repeatability \\
+ &  & with Clock Stretch Enabled \\
+SHT31\_MEAS\_LOWREP\_STRETCH & 0x2C10 & Measurement Low Repeatability \\
+ &  & with Clock Stretch Enabled \\
+SHT31\_MEAS\_HIGHREP & 0x2400 & Measurement High Repeatability \\
+ &  & with Clock Stretch Disabled \\
+SHT31\_MEAS\_MEDREP & 0x240B & Measurement Medium Repeatability \\
+ &  & with Clock Stretch Disabled \\
+SHT31\_MEAS\_LOWREP & 0x2416 & Measurement Low Repeatability \\
+ &  & with Clock Stretch Disabled \\
+SHT31\_READSTATUS & 0xF32D & Read Out of Status Register \\
+SHT31\_CLEARSTATUS & 0x3041 & Clear Status \\
+SHT31\_SOFTRESET & 0x30A2 & Soft Reset \\
+SHT31\_HEATEREN & 0x306D & Heater Enable \\
+SHT31\_HEATERDIS & 0x3066 & Heater Disable \\
+SHT31\_REG\_HEATER\_BIT & 0x0d & Status Register Heater Bit  \\
+\end{tabular}
+\end{center}
+
 \subsection {Serwomechanizm}
+Serwomechanizm wykorzystuje interfejs SPI. Obsługa serwomechanizmu odbywa się za pomocą bilioteki Servo. Przy inicjalizacji przypisujemy numer pinu a następnie przy pomocy funkcji write podajemy kąt jaki wskazać ma serwomechanizm.
+
 \subsection {LED}
 
 \begin{thebibliography}{0}

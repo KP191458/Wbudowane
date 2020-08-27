@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.6.21)  26 AUG 2020 01:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.6.21)  27 AUG 2020 22:45
 entering extended mode
 **./sprawozdanie.tex
 (sprawozdanie.tex
@@ -319,14 +319,24 @@ Underfull \hbox (badness 10000) in paragraph at lines 275--276
 
  []
 
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 333--337
 
-LaTeX Warning: Empty `thebibliography' environment on input line 321.
+ []
+
+
+Overfull \hbox (70.35376pt too wide) in paragraph at lines 344--366
+ [] 
+ []
 
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [9]
-[10] (sprawozdanie.aux) ) 
+ [10]
+
+LaTeX Warning: Empty `thebibliography' environment on input line 374.
+
+[11] (sprawozdanie.aux) ) 
 Here is how much of TeX's memory you used:
  3095 strings out of 480763
  43211 string characters out of 2904068
@@ -348,9 +358,9 @@ am Files/MiKTeX 2.9/fonts/type1/public/pl/plbx12.pfb><C:/Program Files/MiKTeX 2
 lic/pl/plr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/plr17.pfb><
 C:/Program Files/MiKTeX 2.9/fonts/type1/public/pl/pltt10.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/public/pl/pltt12.pfb>
-Output written on sprawozdanie.pdf (10 pages, 143080 bytes).
+Output written on sprawozdanie.pdf (11 pages, 146665 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
+ 92 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
