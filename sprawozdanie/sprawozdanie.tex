@@ -4,6 +4,9 @@
 \usepackage{gensymb}
 \usepackage{listings}
 \usepackage{tabto}
+\usepackage{longtable}
+\usepackage{graphicx}
+\graphicspath{ {./pics/} }
 
 \studycycle{Informatyka, studia niestocjanarne, I st.}
 \coursesemester{IV}
@@ -88,6 +91,8 @@ Arduino to platforma prototypowania elektroniki typu open source oparta na elast
 
 Arduino może wyczuwać środowisko, otrzymując dane wejściowe z różnych czujników i może wpływać na otoczenie, kontrolując światła, silniki i inne siłowniki. Mikrokontroler na płycie programowany jest za pomocą języka programowania Arduino (opartego na Wiring) i środowiska programistycznego Arduino (opartego na Processing). Projekty Arduino mogą być autonomiczne lub mogą komunikować się z oprogramowaniem działającym na komputerze (np. Flash, Processing, Max / MSP).\\
 
+\includegraphics[scale=0.5]{Arduino-Uno}
+
 Parametry techniczne:
 \begin{itemize}
   \item Mikrokontroler ATmega328
@@ -112,6 +117,11 @@ Seria czujników temperatury i wilgotności SHT3x dostępna jest w dwóch wersja
 
 Ponadto wprowadzenie tej wersji dodatkowo rozszerzyło rodzinę produktów SHT3x. Zastosowanie osłony ochronnej typu filmowego rozszerza również zakres zastosowań. Jest to stopień ochrony IP67 dla wody i ochrona przeciwpyłowa niż folia PTFE, dzięki czemu może być stosowany w trudnych warunkach, w których woda i kurz mogą wpływać na dokładność i wydajność czujnika.\\
 
+\begin{center}
+\includegraphics[scale=0.5]{SHT31}\\
+\includegraphics[scale=1.0]{SHT31-Arduino-Uno}
+\end{center}
+
 Cechy:
 \begin{enumerate}
   \item Wysoka niezawodność i długa stabilność
@@ -134,6 +144,10 @@ Parametry produktu:
 
 \subsection {Arduino-Dem - moduł wyświetlacza LCD 2''}
 DEM 1280640 FGH-PW\\
+
+\begin{center}
+\includegraphics[scale=0.5]{U8G2}\\
+\end{center}
 
 FUNKCJE ORAZ CECHY\\
 LCD TYPE
@@ -158,6 +172,10 @@ Dot Gap 		: 20.02 mm\\
 9-gramowe serwo typu micro SG90 firmy TowerPro to bardzo popularny model serwa stosowany w modelarstwie, robotyce, konstrukcjach napędowych, systemach alarmowych.\\
 
 Serwo ma niewielką wagę lecz jest stosunkowo szybkie i ma siłę odpowiednią do sterowania modelami.\\
+
+\begin{center}
+\includegraphics[scale=0.5]{SG90}\\
+\end{center}
 
 Charakterystyka:
 \begin{itemize}
@@ -267,20 +285,23 @@ pinMode(zielona, OUTPUT);
 Użyta przez nas funkcjonalność niezbędna do podstawowej obsługi wyświetlacza przedstawiona została w rozdziale dotyczącym SPI. Natomiast jeśli zajdzie taka potrzeba można dokonać zaawansowanej obsługi wywietlacza poprzez wpisanie porządanych wartości w konkretne rejestry urządzenia. \\
 
 Architekturę urządzenia przedstawia diagram:\\
-
+\begin{center}
+\includegraphics[scale=0.5]{u8g2_software_architecture1}\\
+\includegraphics[scale=0.5]{u8g2_software_architecture2}
+\end{center}
 
 Pełna lista rejestrów cmds znajduje się pod adresem:\\
 \url{https://github.com/olikraus/u8g2/blob/master/doc/controller_cmds.txt}
 
-Najwżniejsze z nich to:\\
+Najważniejsze z nich to:\\
 
 \begin{center}
-\begin{tabular}{ c c c }
+\begin{longtable}{ c c c }
 0x000 & 00000000 & Lo Col \\
 0x00f & 00001111 & Lo Col \\
 0x010 & 00010000 & Hi Col \\
 0x01f & 00011111 & Hi Col \\
-0x020 & 00100000 & Res Ratio   \\
+0x020 & 00100000 & Res Ratio \\
 0x023 & 00100011 & Res Ratio \\
 0x024 & 00100100 & Res Ratio \\
 0x027 & 00100111 & Res Ratio \\
@@ -309,7 +330,7 @@ Najwżniejsze z nich to:\\
 0x0cf & 11001xxx & Com Reverse \\
 0x0e0 & 11100000 & Start R-M-W \\
 0x0e2 & 11100010 & Reset
-\end{tabular}
+\end{longtable}
 \end{center}
 \subsection {I2C}
 Magistrala I2C zawiera siedem rejestrów:
@@ -341,7 +362,7 @@ W projekcie naszym używaliśmy jedynie rejestru \textbf{I2ADR}.
 Odczyt z termometru/miernika wilgotności SHT31 opiera się o odczyt danych z wymienionego wyżej rejestru I2ADR. Do zaawansowanej obsługi SHT31 możemy użyć jego rejestrów:
 
 \begin{center}
-\begin{tabular}{ c c c }
+\begin{longtable}{ c c c }
 nazwa & wartość & opis \\
 SHT31\_DEFAULT\_ADDR & 0x44 & Adres domyślny \\
 SHT31\_MEAS\_HIGHREP\_STRETCH & 0x2C06 & Measurement High Repeatability \\
@@ -362,18 +383,44 @@ SHT31\_SOFTRESET & 0x30A2 & Soft Reset \\
 SHT31\_HEATEREN & 0x306D & Heater Enable \\
 SHT31\_HEATERDIS & 0x3066 & Heater Disable \\
 SHT31\_REG\_HEATER\_BIT & 0x0d & Status Register Heater Bit  \\
-\end{tabular}
+\end{longtable}
 \end{center}
 
 \subsection {Serwomechanizm}
 Serwomechanizm wykorzystuje interfejs SPI. Obsługa serwomechanizmu odbywa się za pomocą bilioteki Servo. Przy inicjalizacji przypisujemy numer pinu a następnie przy pomocy funkcji write podajemy kąt jaki wskazać ma serwomechanizm.
 
 \subsection {LED}
+Diody LED wykorzystują jedynie GPIO oraz w/w funkcje: pinMode i digitalWrite.
+
+\section{Analiza skutków awarii}
+\subsection {Arduino Uno}
+Skutek awarii: \textbf{Krytyczny}\\
+W przypadku awarii, uszkodzenia lub braku zasilania mikrokontrolera nie ma możliwości skorzystania z całego urządzenia. Problemy z bootowanie bądź brakiem zasilania zdarzały się często i koniecny był wtedy restart całego układu. Błąd nie występował podczas prac nad projektem.
+\subsection {Interfejs SPI}
+Skutek awarii: \textbf{Krytyczny}\\
+W przyapdku awarii interfejsu SPI mamy pomiar temperatury ale nie mamy możliwości skorzystania z wyświetlacza, diod LED czy serwomechnizmu. Pomiar możemy odczytać wtedy jedynie na konsoli aplikacji Arduino ale nie jest to wystarczające dla docelowego użytkownika. Błąd nie występował podczas prac nad projektem.
+\subsection {Interfejs I2C}
+Skutek awarii: \textbf{Krytyczny}\\
+W naszym wypadku tożsamy z brakiem odczytu temperatury i poziomu wilgotności czyli uniemożliwia działanie systemu.
+\subsection {SHT31}
+Skutek awarii: \textbf{Krytyczny}\\
+Jak wyżej. Brak odczytu temperatury i poziomu wilgotności uniemożliwia działanie całego systemu. Błąd raczej rzadko występujące.
+\subsection {Wyświetlacz LCD}
+Skutek awarii: \textbf{Średni}\\
+Brak samego wyświetlacza pozwoli na działanie projektu - diody zasygnalizują przekroczenie poziomu wilgotności a serwomechanizm odkręci zawód. Błąd wystąpił kilka razy ale klasyfikuje go jako raczej rzadko występujący.
+\subsection {Serwomechanizm}
+Skutek awarii: \textbf{Średni}\\
+Brak samego serwomechanizmu pozwoli na działanie projektu - diody zasygnalizują przekroczenie poziomu wilgotności a dokładne wartości wyświetlone będą na wyświetlaczu. Błąd wystąpował dosyć często ze wszględu na znaczną konsumpcje napięcia przez serwomechanizm.
+\subsection {Diody LED}
+Skutek awarii: \textbf{Niski}\\
+Brak działających diod LED nie wpływa na działanie projektu - jest to łatwo widoczny sygnał dla użytkownika ale nie jest to niezbędny element do działania pozostałych komponentów.
+
+\section{Awaryjność w czasie}
+Ze względu na konieczność długotrwałego działania, podczas tworzenia projektu układ poddaliśmy testom aby ocenić wpływ czasu na jego działanie. Układ pozostawiliśmy właczony przez dwa kilkudniowe okresy i podczas tego czasu działał on stabilnie i bezawaryjnie - temperatura i wilgotność były mierzone, wyświetlacz wskazywał pomiary a diody sysgnalizowały poziom.
 
 \begin{thebibliography}{0}
 \end{thebibliography}
-{\color{blue} 
-Na końcu należy obowiązkowo podać cytowaną w sprawozdaniu
-literaturę, z której grupa korzystała w trakcie prac nad zadaniem (przykład na
-końcu szablonu)}
+\url{https://github.com/adafruit/Adafruit_SHT31/}\\
+\url{https://github.com/olikraus/u8g2/tree/master/doc}\\
+\url{http://www.fis.agh.edu.pl/~skoczen/embed/pdf3/I2C_LPC17xx.pdf}\\
 \end{document}
